@@ -171,7 +171,8 @@
 //   --hub-milestone-pulse-color (default: the node accent), -duration, -spread.
 @keyframes hub-milestone-pulse {
 	0% {
-		box-shadow: 0 0 0 0 color-mix(in srgb, var(--hub-milestone-pulse-color, var(--hub-milestone-node-color)) 45%, transparent);
+		box-shadow: 0 0 0 0
+			color-mix(in srgb, var(--hub-milestone-pulse-color, var(--hub-milestone-node-color)) 45%, transparent);
 	}
 	70% {
 		box-shadow: 0 0 0 var(--hub-milestone-pulse-spread, 0.75rem) transparent;
@@ -264,6 +265,9 @@
 	clip-path: inset(0 0 0 100%);
 }
 
-[dir='rtl'] .hub-milestones--reveal.hub-milestones--revealed.hub-milestones--horizontal .hub-milestone--complete .hub-milestone__connector {
+[dir='rtl']
+	.hub-milestones--reveal.hub-milestones--revealed.hub-milestones--horizontal
+	.hub-milestone--complete
+	.hub-milestone__connector {
 	animation-name: hub-milestone-fill-h-rtl;
 }

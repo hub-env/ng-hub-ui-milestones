@@ -1,35 +1,35 @@
 {
-  "name": "ng-hub-ui-milestones",
-  "version": "22.3.1",
-  "description": "A lightweight, presentational timeline / progress-steps component for Angular with vertical and horizontal layouts, customizable nodes, and full CSS-variable theming.",
-  "keywords": [
-    "angular",
-    "ng-hub-ui",
-    "milestones",
-    "timeline",
-    "progress-steps",
-    "stepper",
-    "roadmap",
-    "standalone",
-    "signals"
-  ],
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/carlos-morcillo/ng-hub-ui-milestones.git"
-  },
-  "bugs": {
-    "url": "https://github.com/carlos-morcillo/ng-hub-ui/issues"
-  },
-  "peerDependencies": {
-    "@angular/common": ">=21.0.0",
-    "@angular/core": ">=21.0.0",
-    "ng-hub-ui-utils": ">=22.7.0"
-  },
-  "dependencies": {
-    "tslib": "^2.3.0"
-  },
-  "sideEffects": false,
-  "homepage": "https://hubui.dev/",
-  "author": "Carlos Morcillo <carlos.morcillo@me.com> (https://www.carlosmorcillo.com)"
+	"name": "ng-hub-ui-milestones",
+	"version": "22.3.1",
+	"description": "A lightweight, presentational timeline / progress-steps component for Angular with vertical and horizontal layouts, customizable nodes, and full CSS-variable theming.",
+	"keywords": [
+		"angular",
+		"ng-hub-ui",
+		"milestones",
+		"timeline",
+		"progress-steps",
+		"stepper",
+		"roadmap",
+		"standalone",
+		"signals"
+	],
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/carlos-morcillo/ng-hub-ui-milestones.git"
+	},
+	"bugs": {
+		"url": "https://github.com/carlos-morcillo/ng-hub-ui/issues"
+	},
+	"peerDependencies": {
+		"@angular/common": ">=21.0.0",
+		"@angular/core": ">=21.0.0",
+		"ng-hub-ui-utils": ">=22.7.0"
+	},
+	"dependencies": {
+		"tslib": "^2.3.0"
+	},
+	"sideEffects": false,
+	"homepage": "https://hubui.dev/",
+	"author": "Carlos Morcillo <carlos.morcillo@me.com> (https://www.carlosmorcillo.com)"
 }

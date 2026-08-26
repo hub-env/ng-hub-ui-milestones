@@ -23,21 +23,35 @@
 //
 // scss-docs-start hub-milestones-theme
 @mixin hub-milestones-theme(
-	$node-color: null,           // --hub-milestone-node-color (completed node fill)
-	$node-text: null,            // --hub-milestone-node-text (completed node label)
-	$node-size: null,            // --hub-milestone-node-size
-	$node-font-size: null,       // --hub-milestone-node-font-size
-	$connector-bg: null,         // --hub-milestone-connector-bg (completed connector)
-	$connector-pending-bg: null, // --hub-milestone-connector-pending-bg
-	$connector-thickness: null,  // --hub-milestone-connector-thickness
-	$pending-bg: null,           // --hub-milestone-pending-bg (upcoming node fill)
-	$pending-border: null,       // --hub-milestone-pending-border
-	$pending-color: null,        // --hub-milestone-pending-color
-	$error-bg: null,             // --hub-milestone-error-bg
-	$body-color: null,           // --hub-milestone-body-color (step body text)
-	$body-muted: null,           // --hub-milestone-body-muted
-	$gap: null,                  // --hub-milestone-gap
-	$spacing: null               // --hub-milestone-spacing
+	$node-color: null,
+	// --hub-milestone-node-color (completed node fill)
+	$node-text: null,
+	// --hub-milestone-node-text (completed node label)
+	$node-size: null,
+	// --hub-milestone-node-size
+	$node-font-size: null,
+	// --hub-milestone-node-font-size
+	$connector-bg: null,
+	// --hub-milestone-connector-bg (completed connector)
+	$connector-pending-bg: null,
+	// --hub-milestone-connector-pending-bg
+	$connector-thickness: null,
+	// --hub-milestone-connector-thickness
+	$pending-bg: null,
+	// --hub-milestone-pending-bg (upcoming node fill)
+	$pending-border: null,
+	// --hub-milestone-pending-border
+	$pending-color: null,
+	// --hub-milestone-pending-color
+	$error-bg: null,
+	// --hub-milestone-error-bg
+	$body-color: null,
+	// --hub-milestone-body-color (step body text)
+	$body-muted: null,
+	// --hub-milestone-body-muted
+	$gap: null,
+	// --hub-milestone-gap
+	$spacing: null // --hub-milestone-spacing
 ) {
 	@if $node-color != null {
 		--hub-milestone-node-color: #{$node-color};
