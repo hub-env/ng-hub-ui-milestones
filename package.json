@@ -1,6 +1,6 @@
 {
 	"name": "ng-hub-ui-milestones",
-	"version": "22.3.1",
+	"version": "22.3.2",
 	"description": "A lightweight, presentational timeline / progress-steps component for Angular with vertical and horizontal layouts, customizable nodes, and full CSS-variable theming.",
 	"keywords": [
 		"angular",
@@ -30,6 +30,6 @@
 		"tslib": "^2.3.0"
 	},
 	"sideEffects": false,
-	"homepage": "https://hubui.dev/",
+	"homepage": "https://hubui.dev/en/milestones/overview/",
 	"author": "Carlos Morcillo <carlos.morcillo@me.com> (https://www.carlosmorcillo.com)"
 }
