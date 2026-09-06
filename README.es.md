@@ -59,7 +59,7 @@ Esta librería forma parte del ecosistema **Hub UI**:
 
 - `hub-milestones` es el contenedor. Distribuye sus nodos hijos en vertical u horizontal, dibuja el raíl de conexión y numera los nodos automáticamente según el orden del DOM.
 - `hub-milestone` es un nodo individual. Expone un `state` visual (`complete` · `active` · `pending` · `error`), una sustitución opcional de `color` por nodo y un `label` de respaldo. Cualquier marcado colocado dentro se proyecta como el cuerpo del nodo (título, descripción, fechas, etc.).
-- `hubMilestoneNode` es una directiva estructural que permite proyectar contenido personalizado **dentro** del círculo del nodo — un número, un icono, un avatar o cualquier marcado. Si se omite, el nodo muestra el `label` o el índice automático en base 1.
+- `hubMilestoneNode` es una directiva de atributo para un `<ng-template>` que permite proyectar contenido personalizado **dentro** del círculo del nodo — un número, un icono, un avatar o cualquier marcado. Si se omite, el nodo muestra el `label` o el índice automático en base 1.
 
 Los componentes son standalone, basados en signals, usan detección de cambios `OnPush` y son compatibles con SSR.
 
@@ -75,13 +75,25 @@ Los componentes son standalone, basados en signals, usan detección de cambios `
 - **Compatible con RTL**: la disposición, los conectores y la animación de revelado se reflejan correctamente bajo `dir="rtl"`.
 - **Personalización completa con variables CSS**: ajusta colores, tamaños, espaciado y los tiempos de animación mediante los tokens `--hub-milestone-*`.
 - **Standalone y moderno**: componentes standalone, Angular Signals, `OnPush`, compatible con SSR.
-- **Sin dependencias en tiempo de ejecución** más allá de Angular y `tslib`.
+- **Una dependencia adicional**: `ng-hub-ui-utils`, donde vive el resolutor de acentos compartido. Nada más allá de Angular y `tslib`.
 
 ## 📦 Instalación
 
 ```bash
-npm install ng-hub-ui-milestones
+npm install ng-hub-ui-milestones ng-hub-ui-utils
 ```
+
+### Peer dependencies
+
+```json
+{
+	"@angular/common": ">=21.0.0",
+	"@angular/core": ">=21.0.0",
+	"ng-hub-ui-utils": ">=22.7.0"
+}
+```
+
+`ng-hub-ui-utils` es **obligatoria** desde la 22.3.0: el input `color` por nodo resuelve su acento con el helper canónico `resolveHubAccent`, que vive ahí. Al instalar la familia con `ng add ng-hub-ui` se añade sola; una instalación manual tiene que nombrarla o la aplicación no resolverá el import al compilar.
 
 ## 🚀 Uso
 
@@ -222,7 +234,7 @@ Un proveedor de entorno para valores por defecto de toda la aplicación. Añáde
 
 ### `HubMilestoneNodeDirective` — `[hubMilestoneNode]`
 
-Directiva estructural aplicada a un `<ng-template>` para proyectar contenido personalizado **dentro** del círculo del nodo (un número, icono, avatar o cualquier marcado). No tiene inputs ni outputs.
+Directiva de atributo aplicada a un `<ng-template>` para marcar el contenido que se renderiza **dentro** del círculo del nodo (un número, icono, avatar o cualquier marcado). No tiene inputs ni outputs, y no renderiza nada donde se escribe: es `<hub-milestone>` quien recoge la plantilla marcada y la pinta dentro del círculo.
 
 ```html
 <hub-milestone state="complete">
@@ -231,13 +243,15 @@ Directiva estructural aplicada a un `<ng-template>` para proyectar contenido per
 </hub-milestone>
 ```
 
-### Tipos exportados
+### Tipos y tokens exportados
 
 | Tipo                       | Valores                                          |
 | -------------------------- | ------------------------------------------------ |
 | `HubMilestonesOrientation` | `'vertical' \| 'horizontal'`                     |
 | `HubMilestoneState`        | `'complete' \| 'active' \| 'pending' \| 'error'` |
 | `HubMilestonesConfig`      | `{ reveal?: boolean }`                           |
+
+`HUB_MILESTONES_CONFIG` — el `InjectionToken<HubMilestonesConfig>` que rellena `provideHubMilestones()` — también se exporta. Léelo con `inject(HUB_MILESTONES_CONFIG, { optional: true })` cuando necesites los valores por defecto ya resueltos de la aplicación, o provéelo tú mismo para acotarlos a una parte del árbol.
 
 ## 🎨 Estilos
 
@@ -286,6 +300,22 @@ hub-milestones {
 	--hub-milestone-body-color: var(--bs-body-color);
 }
 ```
+
+### Tematización Sass en una sola llamada
+
+Para proyectos Sass, la librería publica sus hojas de estilo en `ng-hub-ui-milestones/styles`, donde el mixin `hub-milestones-theme()` escribe los tokens `--hub-milestone-*` en un único `@include`. Todos los parámetros son opcionales y valen `null` por defecto, así que solo se emiten los que pases; el resto conserva los valores por defecto del componente.
+
+```scss
+@use 'ng-hub-ui-milestones/styles' as *;
+
+.onboarding {
+	@include hub-milestones-theme($node-color: var(--hub-sys-color-primary), $connector-thickness: 3px);
+}
+```
+
+Parámetros disponibles: `$node-color`, `$node-text`, `$node-size`, `$node-font-size`, `$connector-bg`, `$connector-pending-bg`, `$connector-thickness`, `$pending-bg`, `$pending-border`, `$pending-color`, `$error-bg`, `$body-color`, `$body-muted`, `$gap`, `$spacing`.
+
+> Los tokens del componente van en singular (`--hub-milestone-*`) mientras que el paquete y el mixin van en plural (`ng-hub-ui-milestones` / `hub-milestones-theme`).
 
 ## 📝 Changelog
 

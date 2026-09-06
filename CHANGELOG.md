@@ -5,7 +5,20 @@ All notable changes to `ng-hub-ui-milestones` are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [22.3.3] - 2026-09-06
+
+### Fixed
+
+- **The documentation no longer denies the `ng-hub-ui-utils` dependency the package requires.** Both READMEs advertised "zero runtime dependencies" and an install line naming this package alone, while `peerDependencies` has demanded `ng-hub-ui-utils >=22.7.0` since 22.3.0 — so a reader installing by hand, exactly as documented, ended up with an application that cannot resolve `resolveHubAccent`. The install block now names both packages and states the peer range.
+- **`hubMilestoneNode` is described as what it is: an attribute directive.** Calling it structural set the wrong expectation about where its content appears. It only tags a template; `<hub-milestone>` is what renders it inside the circle, so nothing is created or removed at the place the directive is written.
+- **`HUB_MILESTONES_CONFIG` is in the API reference.** The token is exported from `public-api.ts` and is the only way to read the resolved application defaults, yet neither README named it.
+- **The Styling section documents the SCSS the package ships.** `hub-milestones-theme()` and the `ng-hub-ui-milestones/styles` entry point have been published since 22.2.0 with no trace in either README, leaving the one-call theming path visible only to whoever read the changelog.
+
 ## [22.3.2] - 2026-09-01
+
+### Added
+
+- **`BREAKING_CHANGES.md`.** In this family the major version tracks the Angular major, so semver cannot signal a breaking change and that file is the warning in its place. The peer dependency added in 22.3.0 breaks manual installs and had no such entry.
 
 ### Changed
 
@@ -29,7 +42,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- **NEW peer dependency: `ng-hub-ui-utils` `>=22.7.0`.** Consumers must have `ng-hub-ui-utils` installed alongside this library (it is where `resolveHubAccent` lives). Users installing via `ng add ng-hub-ui-installer` get it automatically; manual installs need `npm i ng-hub-ui-utils`.
+- **NEW peer dependency: `ng-hub-ui-utils` `>=22.7.0`.** Consumers must have `ng-hub-ui-utils` installed alongside this library (it is where `resolveHubAccent` lives). Users installing via `ng add ng-hub-ui` get it automatically; manual installs need `npm i ng-hub-ui-utils`.
 
 ## [22.2.1] - 2026-07-28
 

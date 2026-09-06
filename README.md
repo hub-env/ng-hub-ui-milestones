@@ -59,7 +59,7 @@ This library is part of the **Hub UI** ecosystem:
 
 - `hub-milestones` is the container. It lays out its child nodes either vertically or horizontally, draws the connecting rail, and numbers the nodes automatically in DOM order.
 - `hub-milestone` is a single node. It exposes a visual `state` (`complete` · `active` · `pending` · `error`), an optional per-node `color` override, and a `label` fallback. Any markup placed inside it is projected as the node's body (title, description, dates, etc.).
-- `hubMilestoneNode` is a structural directive that lets you project custom content **inside** the node circle — a number, an icon, an avatar, or any markup. When omitted, the node shows the `label` or the auto-generated 1-based index.
+- `hubMilestoneNode` is an attribute directive for an `<ng-template>` that lets you project custom content **inside** the node circle — a number, an icon, an avatar, or any markup. When omitted, the node shows the `label` or the auto-generated 1-based index.
 
 Components are standalone, signal-based, use `OnPush` change detection, and are SSR-safe.
 
@@ -75,13 +75,25 @@ Components are standalone, signal-based, use `OnPush` change detection, and are 
 - **RTL ready**: layout, connectors and the reveal animation flip correctly under `dir="rtl"`.
 - **Full CSS-variable theming**: customize colors, sizes, spacing, and animation timings through `--hub-milestone-*` tokens.
 - **Standalone & modern**: standalone components, Angular Signals, `OnPush`, SSR-safe.
-- **Zero runtime dependencies** beyond Angular and `tslib`.
+- **One extra dependency**: `ng-hub-ui-utils`, where the shared accent resolver lives. Nothing else beyond Angular and `tslib`.
 
 ## 📦 Installation
 
 ```bash
-npm install ng-hub-ui-milestones
+npm install ng-hub-ui-milestones ng-hub-ui-utils
 ```
+
+### Peer Dependencies
+
+```json
+{
+	"@angular/common": ">=21.0.0",
+	"@angular/core": ">=21.0.0",
+	"ng-hub-ui-utils": ">=22.7.0"
+}
+```
+
+`ng-hub-ui-utils` has been **required** since 22.3.0: the per-node `color` input resolves its accent through the canonical `resolveHubAccent` helper that lives there. Installing the family with `ng add ng-hub-ui` brings it in for you; a manual install has to name it, or the application fails to resolve the import at build time.
 
 ## 🚀 Usage
 
@@ -222,7 +234,7 @@ An environment provider for application-wide defaults. Add it to your `Applicati
 
 ### `HubMilestoneNodeDirective` — `[hubMilestoneNode]`
 
-A structural directive applied to an `<ng-template>` to project custom content **inside** the node circle (a number, icon, avatar, or any markup). It has no inputs or outputs.
+An attribute directive applied to an `<ng-template>` to mark the content rendered **inside** the node circle (a number, icon, avatar, or any markup). It has no inputs or outputs, and it renders nothing where it is written: `<hub-milestone>` picks the tagged template up and renders it inside the circle.
 
 ```html
 <hub-milestone state="complete">
@@ -231,13 +243,15 @@ A structural directive applied to an `<ng-template>` to project custom content *
 </hub-milestone>
 ```
 
-### Exported types
+### Exported types and tokens
 
 | Type                       | Values                                           |
 | -------------------------- | ------------------------------------------------ |
 | `HubMilestonesOrientation` | `'vertical' \| 'horizontal'`                     |
 | `HubMilestoneState`        | `'complete' \| 'active' \| 'pending' \| 'error'` |
 | `HubMilestonesConfig`      | `{ reveal?: boolean }`                           |
+
+`HUB_MILESTONES_CONFIG` — the `InjectionToken<HubMilestonesConfig>` that `provideHubMilestones()` fills — is exported as well. Read it with `inject(HUB_MILESTONES_CONFIG, { optional: true })` when you need the resolved application defaults, or provide it yourself to scope them to one part of the tree.
 
 ## 🎨 Styling
 
@@ -286,6 +300,22 @@ hub-milestones {
 	--hub-milestone-body-color: var(--bs-body-color);
 }
 ```
+
+### One-call Sass theming
+
+For Sass projects the library ships its stylesheets at `ng-hub-ui-milestones/styles`, where the `hub-milestones-theme()` mixin writes the `--hub-milestone-*` tokens in a single include. Every parameter is optional and defaults to `null`, so only the ones you pass are emitted and the rest keep the component defaults.
+
+```scss
+@use 'ng-hub-ui-milestones/styles' as *;
+
+.onboarding {
+	@include hub-milestones-theme($node-color: var(--hub-sys-color-primary), $connector-thickness: 3px);
+}
+```
+
+Available parameters: `$node-color`, `$node-text`, `$node-size`, `$node-font-size`, `$connector-bg`, `$connector-pending-bg`, `$connector-thickness`, `$pending-bg`, `$pending-border`, `$pending-color`, `$error-bg`, `$body-color`, `$body-muted`, `$gap`, `$spacing`.
+
+> The component tokens are singular (`--hub-milestone-*`) while the package and the mixin are plural (`ng-hub-ui-milestones` / `hub-milestones-theme`).
 
 ## 📝 Changelog
 
