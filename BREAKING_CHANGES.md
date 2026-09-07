@@ -1,5 +1,21 @@
 # Breaking Changes — ng-hub-ui-milestones
 
+## [22.4.0] - 2026-09-07
+
+### An application's own `:root` now outranks the token defaults
+
+- **Change**: the component is unencapsulated, so its `:root` block of `--hub-milestone-*`
+  defaults lands in the global stylesheet and matches the same element, with the same
+  specificity, as the application's own `:root`. Ties go to whichever sheet was injected last,
+  which is the component's — always. The block is now `:where(:root)`, which scores zero, so the
+  consumer's rule wins on specificity instead of on injection order.
+- **Impact**: a `:root` rule for this library that had no effect now has one, and the timeline
+  changes on screen. Everything else is untouched: same tokens, same declarations, same values,
+  and a `hub-milestones { … }` rule or the per-node `color` input behave exactly as before —
+  those already won, because they declare on the element rather than relying on inheritance.
+- **Migration**: none, unless a `:root` block for this library was written, found ineffective and
+  left behind. Delete it, or make it say what you mean.
+
 ## [22.3.0] - 2026-07-28
 
 ### `ng-hub-ui-utils` is now a required peer dependency

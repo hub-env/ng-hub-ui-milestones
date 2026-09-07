@@ -61,6 +61,9 @@ The library ships two components — `hub-milestones` (the container that lays o
 | | `--hub-milestone-pulse-color` / `-pulse-duration` / `-pulse-spread` | ❌ |
 | | `--hub-milestone-reveal-duration` / `-reveal-stagger` | ❌ |
 | **Sass** | `hub-milestones-theme()` mixin from `ng-hub-ui-milestones/styles` | ✅ |
+| **Scope** | Redefined inline on the element or on a wrapper | ✅ |
+| | Redefined on a `hub-milestones` selector | ❌ |
+| | Redefined application-wide on `:root` (the defaults ship at zero specificity) | ❌ |
 
 ---
 

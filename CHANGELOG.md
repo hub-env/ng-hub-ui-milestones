@@ -5,6 +5,36 @@ All notable changes to `ng-hub-ui-milestones` are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [22.4.0] - 2026-09-07
+
+### Fixed
+
+- **The trail follows a per-node accent again, which both READMEs have always promised.** The
+  connector read `--hub-milestone-connector-bg`, and that token was declared at the root as
+  `var(--hub-milestone-node-color)`. A custom property resolves its own `var()` on the element that
+  declares it, so the fallback was already resolved at the root, where no per-node value exists: a
+  milestone given its own `color` painted a coloured node and left the trail on the global accent.
+  The pair is gone from the root block and the connector now reads
+  `var(--hub-milestone-connector-bg, var(--hub-milestone-node-color))` where it paints, which is
+  the shape `--hub-milestone-pulse-color` next to it already had. Setting the token from the
+  application still wins, and now a per-node `color` reaches the trail.
+
+- **A `:root` in the application now outranks the library's token defaults.** The component is
+  unencapsulated, so its `:root` block of `--hub-milestone-*` defaults lands in the global
+  stylesheet — same element, same specificity as the application's own `:root`, which leaves the
+  tie to injection order. The component's sheet is injected last, so it won every time and a
+  product could not re-theme a timeline from `:root`, which is precisely where the README told it
+  to. The block is now `:where(:root)`, specificity zero, so the consumer's rule wins on merit and
+  nothing needs `!important`. Same tokens, same values; only what wins changed. See
+  `BREAKING_CHANGES.md`.
+
+### Changed
+
+- **The Styling section of both READMEs says where a redefinition actually lands.** It listed
+  `:root`, a `hub-milestones` selector and the per-node `color` input as equivalent, when the
+  first of the three did nothing. It now says all three reach the component and which one wins
+  where.
+
 ## [22.3.3] - 2026-09-06
 
 ### Fixed
@@ -100,7 +130,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Aligned with Angular 22.
 - README documentation standardized.
-
 
 ## [21.0.0] - 2026-06-14
 

@@ -257,6 +257,8 @@ An attribute directive applied to an `<ng-template>` to mark the content rendere
 
 The library is themed entirely through `--hub-milestone-*` CSS variables, with safe fallbacks so it works standalone and re-themes at runtime. Override them on `:root`, on a `hub-milestones` selector, or per node via the `color` input.
 
+All three reach the component. The defaults ship inside a `:where(:root)` block, which scores zero specificity, so a rule you write anywhere — `:root`, `html`, `hub-milestones`, a wrapper class — outranks them without `!important`. The closer the selector, the narrower the scope: `:root` re-themes every timeline in the application, `hub-milestones` only the ones matching that selector, and the `color` input a single node.
+
 | CSS Variable                           | Default                                        | Description                                                          |
 | -------------------------------------- | ---------------------------------------------- | ------------------------------------------------------------------- |
 | `--hub-milestone-node-size`            | `2.75rem`                                      | Diameter of the node circle.                                        |
@@ -268,7 +270,7 @@ The library is themed entirely through `--hub-milestone-*` CSS variables, with s
 | `--hub-milestone-pending-border`       | `var(--hub-sys-border-color-default, #dee2e6)` | Border of a pending node.                                          |
 | `--hub-milestone-error-bg`             | `var(--hub-sys-color-danger, #dc3545)`         | Background of an error node.                                       |
 | `--hub-milestone-connector-thickness`  | `3px`                                          | Thickness of the connecting rail.                                  |
-| `--hub-milestone-connector-bg`         | `var(--hub-milestone-node-color)`              | Connector fill for completed segments (follows the node accent).   |
+| `--hub-milestone-connector-bg`         | falls back to `--hub-milestone-node-color`     | Connector fill for completed segments. Unset, it follows the node accent, including a per-node `color`. |
 | `--hub-milestone-connector-pending-bg` | `var(--hub-sys-border-color-default, #dee2e6)` | Connector fill for segments leading into a pending node.           |
 | `--hub-milestone-gap`                  | `1rem`                                         | Gap between the node and its body.                                 |
 | `--hub-milestone-spacing`              | `1.75rem`                                      | Spacing between consecutive milestones.                            |

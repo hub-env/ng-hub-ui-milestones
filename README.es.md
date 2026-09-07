@@ -257,6 +257,8 @@ Directiva de atributo aplicada a un `<ng-template>` para marcar el contenido que
 
 La librería se personaliza por completo mediante variables CSS `--hub-milestone-*`, con valores de respaldo seguros para que funcione de forma autónoma y se re-tematice en tiempo de ejecución. Sobreescríbelas en `:root`, en un selector `hub-milestones` o por nodo mediante el input `color`.
 
+Las tres vías llegan al componente. Los valores por defecto se publican dentro de un bloque `:where(:root)`, cuya especificidad es cero, de modo que cualquier regla que escribas —`:root`, `html`, `hub-milestones`, una clase contenedora— gana sin necesidad de `!important`. Cuanto más cercano el selector, más estrecho el alcance: `:root` re-tematiza todas las líneas de tiempo de la aplicación, `hub-milestones` solo las que coincidan con ese selector, y el input `color`, un único nodo.
+
 | Variable CSS                           | Por defecto                                    | Descripción                                                          |
 | -------------------------------------- | ---------------------------------------------- | -------------------------------------------------------------------- |
 | `--hub-milestone-node-size`            | `2.75rem`                                      | Diámetro del círculo del nodo.                                       |
@@ -268,7 +270,7 @@ La librería se personaliza por completo mediante variables CSS `--hub-milestone
 | `--hub-milestone-pending-border`       | `var(--hub-sys-border-color-default, #dee2e6)` | Borde de un nodo pendiente.                                        |
 | `--hub-milestone-error-bg`             | `var(--hub-sys-color-danger, #dc3545)`         | Fondo de un nodo de error.                                        |
 | `--hub-milestone-connector-thickness`  | `3px`                                          | Grosor del raíl de conexión.                                      |
-| `--hub-milestone-connector-bg`         | `var(--hub-milestone-node-color)`              | Fondo del conector para segmentos completados (sigue el acento).  |
+| `--hub-milestone-connector-bg`         | por defecto, `--hub-milestone-node-color`      | Fondo del conector para segmentos completados. Sin fijar, sigue el acento del nodo, incluido un `color` por nodo. |
 | `--hub-milestone-connector-pending-bg` | `var(--hub-sys-border-color-default, #dee2e6)` | Fondo del conector que lleva a un nodo pendiente.                 |
 | `--hub-milestone-gap`                  | `1rem`                                         | Espacio entre el nodo y su cuerpo.                                |
 | `--hub-milestone-spacing`              | `1.75rem`                                      | Espaciado entre hitos consecutivos.                               |

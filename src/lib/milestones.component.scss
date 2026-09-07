@@ -5,7 +5,14 @@
 // standalone and re-themes at runtime.
 // ─────────────────────────────────────────────────────────────────────────
 
-:root {
+// The defaults sit at ZERO specificity. The component is unencapsulated, so this
+// block lands in the global sheet — and a plain `:root` here matches the same
+// element as the application's own `:root` with the same specificity, which hands
+// the win to whichever sheet was injected last. That is the component's, always,
+// so nothing an application wrote on `:root` ever reached a milestone. Wrapped in
+// `:where()` the defaults score 0 and any consumer rule outranks them, without a
+// single `!important`.
+:where(:root) {
 	--hub-milestone-node-size: 2.75rem;
 	--hub-milestone-node-font-size: 1.05rem;
 	--hub-milestone-node-color: var(--hub-sys-color-primary, #0d6efd);
@@ -15,9 +22,6 @@
 	--hub-milestone-pending-border: var(--hub-sys-border-color-default, #dee2e6);
 	--hub-milestone-error-bg: var(--hub-sys-color-danger, #dc3545);
 	--hub-milestone-connector-thickness: 3px;
-	// Completed/active trail follows the node accent (theme-aware, and matches
-	// any per-node `color` override). Pending uses --hub-milestone-connector-pending-bg.
-	--hub-milestone-connector-bg: var(--hub-milestone-node-color);
 	--hub-milestone-connector-pending-bg: var(--hub-sys-border-color-default, #dee2e6);
 	--hub-milestone-gap: 1rem;
 	--hub-milestone-spacing: 1.75rem;
@@ -69,7 +73,12 @@
 	// Absolutely positioned so it spans node-edge to next-node-edge, crossing the
 	// inter-node spacing (which lives in the milestone's padding, outside the rail).
 	position: absolute;
-	background: var(--hub-milestone-connector-bg);
+	// Read here, not declared at the root, so the fallback resolves against THIS element: a
+	// milestone that sets its own `color` writes --hub-milestone-node-color on its host, and the
+	// trail follows it. Declaring the pair at the root computed the fallback there, where the
+	// per-node value does not exist yet, so the trail stayed on the global accent — which is not
+	// what both READMEs have always promised. Same shape as --hub-milestone-pulse-color below.
+	background: var(--hub-milestone-connector-bg, var(--hub-milestone-node-color));
 	border-radius: var(--hub-sys-radius-pill, 50rem);
 	z-index: 0;
 }
