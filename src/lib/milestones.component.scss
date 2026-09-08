@@ -88,6 +88,50 @@
 	min-width: 0;
 }
 
+// ── The state, said rather than coloured ─────────────────────────────────
+// The rail is `aria-hidden`, so until this span existed the state reached nobody who
+// could not see the colour — and `error`, the one state worth interrupting for, was a
+// red circle and nothing else. The word lives in the body, where it is read as part of
+// the step, and is clipped rather than hidden: `display: none` and `visibility: hidden`
+// would take it out of the accessibility tree too, which is the one thing it is for.
+.hub-milestone__state {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip-path: inset(50%);
+	white-space: nowrap;
+	border: 0;
+}
+
+// The same distinction for a reader who sees the node but not its hue: a light badge on a
+// dark node, which survives greyscale and every form of colour blindness. Sized off the node
+// so it tracks `--hub-milestone-node-size`, and it sits on the corner rather than replacing
+// the node's content, which the consumer may own through `hubMilestoneNode`.
+.hub-milestone__marker {
+	// Anchored on the milestone rather than on the node, so the node's text content stays
+	// exactly what the consumer put there. Both layouts place the node at the milestone's
+	// block-start / inline-start corner, so one pair of offsets serves the two of them, and
+	// `inset-inline-start` flips the mark with the writing direction on its own.
+	position: absolute;
+	inset-block-start: 0;
+	inset-inline-start: calc(var(--hub-milestone-node-size) * 0.6);
+	z-index: 2;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: calc(var(--hub-milestone-node-size) * 0.45);
+	height: calc(var(--hub-milestone-node-size) * 0.45);
+	border-radius: 50%;
+	background: var(--hub-milestone-node-text);
+	color: var(--hub-milestone-error-bg);
+	font-size: calc(var(--hub-milestone-node-font-size) * 0.8);
+	font-weight: var(--hub-ref-font-weight-bold, 700);
+	line-height: 1;
+}
+
 // ── State colors ─────────────────────────────────────────────────────────
 .hub-milestone--pending .hub-milestone__node {
 	background: var(--hub-milestone-pending-bg);

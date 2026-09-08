@@ -140,6 +140,42 @@ export class RoadmapComponent {}
 </hub-milestones>
 ```
 
+### The state without the colour
+
+An `error` node is the one state a reader must not miss, and colour alone cannot carry it. Two
+things are automatic and need no markup from you:
+
+- **A mark on the circle**, light on the node's own fill, so the difference survives greyscale
+  and every form of colour blindness.
+- **The state as a word in the node body**, clipped out of the page — one pixel, `clip-path`, no
+  `display: none` — so it never shows and is always read out with the step.
+
+```html
+<hub-milestones>
+	<hub-milestone state="complete"><h4>Ordered</h4></hub-milestone>
+
+	<!-- No extra markup: the mark and the announced word come with the state -->
+	<hub-milestone state="error"><h4>Payment declined</h4></hub-milestone>
+
+	<!-- Per node, which is one of the two ways to translate the wording -->
+	<hub-milestone state="pending" stateLabel="Pendiente"><h4>Delivery</h4></hub-milestone>
+</hub-milestones>
+```
+
+The defaults are English (`Completed`, `Pending`, `Error`, and nothing for `active`, which
+`aria-current="step"` already names). Translate them once for the whole application:
+
+```ts
+providers: [
+	provideHubMilestones({
+		stateLabels: { complete: 'Completado', pending: 'Pendiente', error: 'Error' }
+	})
+];
+```
+
+Each node also carries `data-state`, the same attribute hook `toast`, `badges` and `stepper`
+expose, if you would rather select on it than on the modifier class.
+
 ### Labels and per-node color
 
 ```html
@@ -219,6 +255,7 @@ An environment provider for application-wide defaults. Add it to your `Applicati
 | Option   | Type      | Default | Description                                                                              |
 | -------- | --------- | ------- | ---------------------------------------------------------------------------------------- |
 | `reveal` | `boolean` | `true`  | Default for the viewport reveal animation. Overridden per instance by the `[reveal]` input. |
+| `stateLabels` | `Partial<Record<HubMilestoneState, string>>` | _(English)_ | The word each state is announced with. This is where the wording gets translated; `''` silences a state. Overridden per node by `[stateLabel]`. |
 
 ### `HubMilestoneComponent` — `<hub-milestone>`
 
@@ -229,6 +266,7 @@ An environment provider for application-wide defaults. Add it to your `Applicati
 | `state` | `HubMilestoneState` | `'pending'` | Visual state: `'complete'` · `'active'` · `'pending'` · `'error'`. Drives node/connector colors.  |
 | `color` | `string`            | `''`        | Per-node color override (any CSS color). Wins over the state color.                               |
 | `label` | `string`            | `''`        | Fallback content shown inside the node when no `hubMilestoneNode` template is given.              |
+| `stateLabel` | `string \| undefined` | _(global)_ | The word this node is announced with, overriding `stateLabels`. `''` silences it; leave it unset to inherit. |
 
 > Projected (non-template) content placed inside `<hub-milestone>` is rendered as the node body, beside (vertical) or below (horizontal) the node circle.
 
@@ -249,7 +287,7 @@ An attribute directive applied to an `<ng-template>` to mark the content rendere
 | -------------------------- | ------------------------------------------------ |
 | `HubMilestonesOrientation` | `'vertical' \| 'horizontal'`                     |
 | `HubMilestoneState`        | `'complete' \| 'active' \| 'pending' \| 'error'` |
-| `HubMilestonesConfig`      | `{ reveal?: boolean }`                           |
+| `HubMilestonesConfig`      | `{ reveal?: boolean; stateLabels?: Partial<Record<HubMilestoneState, string>> }` |
 
 `HUB_MILESTONES_CONFIG` — the `InjectionToken<HubMilestonesConfig>` that `provideHubMilestones()` fills — is exported as well. Read it with `inject(HUB_MILESTONES_CONFIG, { optional: true })` when you need the resolved application defaults, or provide it yourself to scope them to one part of the tree.
 

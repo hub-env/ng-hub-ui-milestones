@@ -5,6 +5,33 @@ All notable changes to `ng-hub-ui-milestones` are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [22.5.0] - 2026-09-08
+
+### Added
+
+- **A milestone in error is no longer distinguishable by colour alone.** It was a red circle and
+  nothing else: the rail carries `aria-hidden="true"`, so the state reached nobody who does not
+  separate red from green, on the one state where the difference is the whole point. Two signals
+  replace the one. Each node now renders its state as a word inside the body — clipped out of the
+  page with the same one-pixel technique `ng-hub-ui-forms` uses for `labelType="visually-hidden"`,
+  so it stays in the accessibility tree and is read with the step — and an error node additionally
+  carries a light mark on its upper edge, which survives greyscale and every form of colour
+  blindness. The mark is a sibling of the circle rather than part of it, so a node's text content
+  is still exactly what you put there and `hubMilestoneNode` keeps owning the circle.
+- **`stateLabel` on `hub-milestone`, and `stateLabels` in `HubMilestonesConfig`.** The announced
+  word is English by default (`Completed`, `Pending`, `Error`, and nothing for `active`, which
+  `aria-current="step"` already names); these two are how it gets translated. The per-node input
+  wins over the application-wide option, and `''` silences one node or one state. Both are
+  optional and nothing changes for an application that sets neither.
+- **`data-state` on `hub-milestone`**, mirroring the state the modifier classes already carry —
+  the same attribute hook `toast`, `badges` and `stepper` expose for styling and for tests.
+
+### Changed
+
+- The node body now contains one clipped `<span class="hub-milestone__state">` before the
+  projected content. Nothing moves on screen and no API changes, but a test asserting on the
+  exact `textContent` of a milestone body will see the state word alongside its own copy.
+
 ## [22.4.0] - 2026-09-07
 
 ### Fixed

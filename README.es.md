@@ -140,6 +140,42 @@ export class RoadmapComponent {}
 </hub-milestones>
 ```
 
+### El estado sin el color
+
+Un nodo en `error` es el estado que no se puede pasar por alto, y el color solo no basta para
+llevarlo. Dos cosas salen automáticas y no piden nada de tu parte:
+
+- **Una marca sobre el círculo**, clara sobre el relleno del propio nodo, para que la diferencia
+  sobreviva a la escala de grises y a cualquier forma de daltonismo.
+- **El estado como palabra en el cuerpo del nodo**, recortada fuera de la página —un píxel,
+  `clip-path`, nada de `display: none`—, así que nunca se ve y siempre se lee junto al paso.
+
+```html
+<hub-milestones>
+	<hub-milestone state="complete"><h4>Pedido</h4></hub-milestone>
+
+	<!-- Sin marcado extra: la marca y la palabra vienen con el estado -->
+	<hub-milestone state="error"><h4>Pago rechazado</h4></hub-milestone>
+
+	<!-- Por nodo, una de las dos formas de traducir la palabra -->
+	<hub-milestone state="pending" stateLabel="Pendiente"><h4>Entrega</h4></hub-milestone>
+</hub-milestones>
+```
+
+Los valores por defecto están en inglés (`Completed`, `Pending`, `Error`, y nada para `active`,
+que `aria-current="step"` ya nombra). Para traducirlos una vez en toda la aplicación:
+
+```ts
+providers: [
+	provideHubMilestones({
+		stateLabels: { complete: 'Completado', pending: 'Pendiente', error: 'Error' }
+	})
+];
+```
+
+Cada nodo lleva además `data-state`, el mismo atributo que ya exponen `toast`, `badges` y
+`stepper`, por si prefieres seleccionar por ahí en lugar de por la clase modificadora.
+
 ### Etiquetas y color por nodo
 
 ```html
@@ -219,6 +255,7 @@ Un proveedor de entorno para valores por defecto de toda la aplicación. Añáde
 | Opción   | Tipo      | Por defecto | Descripción                                                                                       |
 | -------- | --------- | ----------- | ------------------------------------------------------------------------------------------------- |
 | `reveal` | `boolean` | `true`      | Valor por defecto de la animación de revelado. Se sobrescribe por instancia con el input `[reveal]`. |
+| `stateLabels` | `Partial<Record<HubMilestoneState, string>>` | _(inglés)_ | La palabra con la que se anuncia cada estado. Aquí es donde se traduce; `''` silencia un estado. Se sobrescribe por nodo con `[stateLabel]`. |
 
 ### `HubMilestoneComponent` — `<hub-milestone>`
 
@@ -229,6 +266,7 @@ Un proveedor de entorno para valores por defecto de toda la aplicación. Añáde
 | `state` | `HubMilestoneState` | `'pending'` | Estado visual: `'complete'` · `'active'` · `'pending'` · `'error'`. Controla los colores del nodo/conector. |
 | `color` | `string`            | `''`        | Sustitución de color por nodo (cualquier color CSS). Prevalece sobre el color del estado.            |
 | `label` | `string`            | `''`        | Contenido de respaldo mostrado dentro del nodo cuando no se proporciona una plantilla `hubMilestoneNode`. |
+| `stateLabel` | `string \| undefined` | _(global)_ | La palabra con la que se anuncia este nodo, por encima de `stateLabels`. `''` la silencia; sin valor, hereda. |
 
 > El contenido proyectado (no de plantilla) colocado dentro de `<hub-milestone>` se renderiza como el cuerpo del nodo, junto (vertical) o debajo (horizontal) del círculo del nodo.
 
@@ -249,7 +287,7 @@ Directiva de atributo aplicada a un `<ng-template>` para marcar el contenido que
 | -------------------------- | ------------------------------------------------ |
 | `HubMilestonesOrientation` | `'vertical' \| 'horizontal'`                     |
 | `HubMilestoneState`        | `'complete' \| 'active' \| 'pending' \| 'error'` |
-| `HubMilestonesConfig`      | `{ reveal?: boolean }`                           |
+| `HubMilestonesConfig`      | `{ reveal?: boolean; stateLabels?: Partial<Record<HubMilestoneState, string>> }` |
 
 `HUB_MILESTONES_CONFIG` — el `InjectionToken<HubMilestonesConfig>` que rellena `provideHubMilestones()` — también se exporta. Léelo con `inject(HUB_MILESTONES_CONFIG, { optional: true })` cuando necesites los valores por defecto ya resueltos de la aplicación, o provéelo tú mismo para acotarlos a una parte del árbol.
 

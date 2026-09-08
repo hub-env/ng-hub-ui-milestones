@@ -38,6 +38,11 @@ The library ships two components — `hub-milestones` (the container that lays o
 | **Accessibility** | `role="listitem"` on each node | ❌ |
 | | `aria-current="step"` on the `active` node | ❌ |
 | | Rail marked `aria-hidden="true"` so the decorative circle is not announced | ❌ |
+| | State announced as a clipped word in the body, so it does not depend on colour | ✅ |
+| | Non-colour mark on the `error` node, legible in greyscale | ✅ |
+| | Wording overridden per node (`stateLabel`) | ✅ |
+| | Wording overridden per application (`stateLabels` in `provideHubMilestones`) | ❌ |
+| | `data-state` attribute mirroring the state, for styling and tests | ❌ |
 
 ## Configuration
 
