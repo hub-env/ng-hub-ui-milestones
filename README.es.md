@@ -3,7 +3,7 @@
 **Español** | [English](./README.md)
 
 [![npm version](https://img.shields.io/npm/v/ng-hub-ui-milestones.svg)](https://www.npmjs.com/package/ng-hub-ui-milestones)
-[![license](https://img.shields.io/npm/l/ng-hub-ui-milestones.svg)](https://github.com/carlos-morcillo/ng-hub-ui-milestones/blob/main/LICENSE)
+[![license](https://img.shields.io/npm/l/ng-hub-ui-milestones.svg)](https://github.com/hub-env/ng-hub-ui-milestones/blob/main/LICENSE)
 
 Un componente de línea de tiempo / pasos de progreso ligero y presentacional para Angular: distribuye nodos de hitos en vertical u horizontal, proyecta cualquier contenido dentro de cada nodo y personaliza todo mediante variables CSS.
 
@@ -14,6 +14,7 @@ Este paquete forma parte de [Hub UI](https://hubui.dev/en/), una colección de l
 - Documentación: https://hubui.dev/en/milestones/overview/
 - Ejemplos en vivo: https://hubui.dev/en/milestones/examples/
 - Hub UI: https://hubui.dev/en/
+- Hub UI en GitHub (incidencias, roadmap y cómo contribuir): https://github.com/hub-env/hub-ui
 
 ## 🧩 Familia de librerías `ng-hub-ui`
 
@@ -365,12 +366,12 @@ Consulta el [CHANGELOG.md](./CHANGELOG.md) completo para ver el historial de ver
 
 Las contribuciones son bienvenidas. Por favor, abre un issue para discutir cambios importantes antes de enviar un pull request, y sigue el estilo de código y las convenciones existentes.
 
-- Repositorio: https://github.com/carlos-morcillo/ng-hub-ui-milestones
-- Issues: https://github.com/carlos-morcillo/ng-hub-ui/issues
+- Repositorio: https://github.com/hub-env/ng-hub-ui-milestones
+- Issues: https://github.com/hub-env/hub-ui/issues
 
 ## 📞 Soporte
 
-- **Issues**: [GitHub Issues](https://github.com/carlos-morcillo/ng-hub-ui/issues)
+- **Issues**: [GitHub Issues](https://github.com/hub-env/hub-ui/issues)
 - **Autor**: [Carlos Morcillo](https://www.carlosmorcillo.com)
 
 ## 📄 Licencia

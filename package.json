@@ -16,10 +16,10 @@
 	"license": "MIT",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/carlos-morcillo/ng-hub-ui-milestones.git"
+		"url": "git+https://github.com/hub-env/ng-hub-ui-milestones.git"
 	},
 	"bugs": {
-		"url": "https://github.com/carlos-morcillo/ng-hub-ui/issues"
+		"url": "https://github.com/hub-env/hub-ui/issues"
 	},
 	"peerDependencies": {
 		"@angular/common": ">=21.0.0",
