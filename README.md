@@ -88,8 +88,8 @@ npm install ng-hub-ui-milestones ng-hub-ui-utils
 
 ```json
 {
-	"@angular/common": ">=17.2.0",
-	"@angular/core": ">=17.2.0",
+	"@angular/common": ">=17.3.0",
+	"@angular/core": ">=17.3.0",
 	"ng-hub-ui-utils": ">=22.7.0"
 }
 ```

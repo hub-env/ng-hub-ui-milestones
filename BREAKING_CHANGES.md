@@ -1,5 +1,17 @@
 # Breaking Changes — ng-hub-ui-milestones
 
+## [22.6.0] - 2026-09-23
+
+### Angular below 17.3.0 is no longer supported
+
+- **Change**: the `@angular/*` peer ranges move from `>=17.2.0` to `>=17.3.0`.
+
+- **Why**: Its published `.d.ts` names `InputSignalWithTransform` or `OutputEmitterRef`, which Angular did not ship until 17.3.
+
+- **Impact — an application below 17.3.0 gets a peer warning where it used to get a build error.**
+  Nothing that worked stops working: those versions never compiled against this package. Upgrade
+  Angular to 17.3.0 or stay on the previous release.
+
 ## [22.4.0] - 2026-09-07
 
 ### An application's own `:root` now outranks the token defaults
@@ -31,11 +43,11 @@
   helper.
 - **Migration**: install the package alongside this one.
 
-  ```bash
-  npm install ng-hub-ui-utils
-  ```
+    ```bash
+    npm install ng-hub-ui-utils
+    ```
 
-  Applications set up through `ng add ng-hub-ui` already have it and need no change.
+    Applications set up through `ng add ng-hub-ui` already have it and need no change.
 
 ## [21.0.0] - 2026-06-14
 
