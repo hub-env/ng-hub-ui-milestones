@@ -71,7 +71,6 @@ describe('milestones token cascade', () => {
 				'--hub-milestone-node-size',
 				'--hub-milestone-node-font-size',
 				'--hub-milestone-node-color',
-				'--hub-milestone-node-text',
 				'--hub-milestone-pending-bg',
 				'--hub-milestone-pending-color',
 				'--hub-milestone-pending-border',
@@ -98,6 +97,23 @@ describe('milestones token cascade', () => {
 		);
 
 		const declaring = shippedRules().filter((rule) => /--hub-milestone-connector-bg\s*:/.test(rule.body));
+		expect(declaring, 'nothing declares the token upstream, or the fallback would resolve there').toEqual([]);
+	});
+
+	// `--hub-milestone-node-text` belongs to the same family as the connector pair: its default
+	// is derived from the node's own colour, so it has to resolve where the node is painted. A
+	// root declaration would compute the derivation against the root accent and hand every node
+	// the same ink, whatever colour the consumer gave it — which is how white ended up on an
+	// amber disc at 2.15:1. It stays a full override hook, read first at the point of use.
+	it('keeps the node ink derived at the node, with the override hook first', () => {
+		const [node] = shippedRules().filter((rule) => rule.selector === '.hub-milestone__node');
+
+		expect(node, 'the node rule reaches the document').toBeTruthy();
+		expect(node.body, 'the node reads its ink where it paints, with the token first').toMatch(
+			/color:\s*var\(--hub-milestone-node-text,\s*oklch\(from var\(--hub-milestone-node-color\)/
+		);
+
+		const declaring = shippedRules().filter((rule) => /--hub-milestone-node-text\s*:/.test(rule.body));
 		expect(declaring, 'nothing declares the token upstream, or the fallback would resolve there').toEqual([]);
 	});
 });

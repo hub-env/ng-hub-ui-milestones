@@ -242,7 +242,7 @@ El input `[reveal]` por instancia siempre prevalece sobre el valor global:
 #### Inputs
 
 | Input         | Tipo                       | Por defecto  | Descripción                                                                                                                                |
-| ------------- | -------------------------- | ------------ | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| ------------- | -------------------------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------ |
 | `orientation` | `HubMilestonesOrientation` | `'vertical'` | Dirección del diseño: `'vertical'` u `'horizontal'`.                                                                                       |
 | `pulse`       | `boolean`                  | `false`      | Emite una onda suave sobre el nodo `active` para destacar el paso actual. Respeta `prefers-reduced-motion`.                                |
 | `reveal`      | `boolean`                  | _(global)_   | Reproduce la animación de revelado al entrar en el viewport. Por defecto toma el valor de `provideHubMilestones` (activado si no se fija). |
@@ -253,21 +253,21 @@ El input `[reveal]` por instancia siempre prevalece sobre el valor global:
 
 Un proveedor de entorno para valores por defecto de toda la aplicación. Añádelo al array `providers` de tu `ApplicationConfig`.
 
-| Opción   | Tipo      | Por defecto | Descripción                                                                                       |
-| -------- | --------- | ----------- | ------------------------------------------------------------------------------------------------- |
-| `reveal` | `boolean` | `true`      | Valor por defecto de la animación de revelado. Se sobrescribe por instancia con el input `[reveal]`. |
-| `stateLabels` | `Partial<Record<HubMilestoneState, string>>` | _(inglés)_ | La palabra con la que se anuncia cada estado. Aquí es donde se traduce; `''` silencia un estado. Se sobrescribe por nodo con `[stateLabel]`. |
+| Opción        | Tipo                                         | Por defecto | Descripción                                                                                                                                  |
+| ------------- | -------------------------------------------- | ----------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| `reveal`      | `boolean`                                    | `true`      | Valor por defecto de la animación de revelado. Se sobrescribe por instancia con el input `[reveal]`.                                         |
+| `stateLabels` | `Partial<Record<HubMilestoneState, string>>` | _(inglés)_  | La palabra con la que se anuncia cada estado. Aquí es donde se traduce; `''` silencia un estado. Se sobrescribe por nodo con `[stateLabel]`. |
 
 ### `HubMilestoneComponent` — `<hub-milestone>`
 
 #### Inputs
 
-| Input   | Tipo                | Por defecto | Descripción                                                                                          |
-| ------- | ------------------- | ----------- | ---------------------------------------------------------------------------------------------------- |
-| `state` | `HubMilestoneState` | `'pending'` | Estado visual: `'complete'` · `'active'` · `'pending'` · `'error'`. Controla los colores del nodo/conector. |
-| `color` | `string`            | `''`        | Sustitución de color por nodo (cualquier color CSS). Prevalece sobre el color del estado.            |
-| `label` | `string`            | `''`        | Contenido de respaldo mostrado dentro del nodo cuando no se proporciona una plantilla `hubMilestoneNode`. |
-| `stateLabel` | `string \| undefined` | _(global)_ | La palabra con la que se anuncia este nodo, por encima de `stateLabels`. `''` la silencia; sin valor, hereda. |
+| Input        | Tipo                  | Por defecto | Descripción                                                                                                   |
+| ------------ | --------------------- | ----------- | ------------------------------------------------------------------------------------------------------------- |
+| `state`      | `HubMilestoneState`   | `'pending'` | Estado visual: `'complete'` · `'active'` · `'pending'` · `'error'`. Controla los colores del nodo/conector.   |
+| `color`      | `string`              | `''`        | Sustitución de color por nodo (cualquier color CSS). Prevalece sobre el color del estado.                     |
+| `label`      | `string`              | `''`        | Contenido de respaldo mostrado dentro del nodo cuando no se proporciona una plantilla `hubMilestoneNode`.     |
+| `stateLabel` | `string \| undefined` | _(global)_  | La palabra con la que se anuncia este nodo, por encima de `stateLabels`. `''` la silencia; sin valor, hereda. |
 
 > El contenido proyectado (no de plantilla) colocado dentro de `<hub-milestone>` se renderiza como el cuerpo del nodo, junto (vertical) o debajo (horizontal) del círculo del nodo.
 
@@ -284,10 +284,10 @@ Directiva de atributo aplicada a un `<ng-template>` para marcar el contenido que
 
 ### Tipos y tokens exportados
 
-| Tipo                       | Valores                                          |
-| -------------------------- | ------------------------------------------------ |
-| `HubMilestonesOrientation` | `'vertical' \| 'horizontal'`                     |
-| `HubMilestoneState`        | `'complete' \| 'active' \| 'pending' \| 'error'` |
+| Tipo                       | Valores                                                                          |
+| -------------------------- | -------------------------------------------------------------------------------- |
+| `HubMilestonesOrientation` | `'vertical' \| 'horizontal'`                                                     |
+| `HubMilestoneState`        | `'complete' \| 'active' \| 'pending' \| 'error'`                                 |
 | `HubMilestonesConfig`      | `{ reveal?: boolean; stateLabels?: Partial<Record<HubMilestoneState, string>> }` |
 
 `HUB_MILESTONES_CONFIG` — el `InjectionToken<HubMilestonesConfig>` que rellena `provideHubMilestones()` — también se exporta. Léelo con `inject(HUB_MILESTONES_CONFIG, { optional: true })` cuando necesites los valores por defecto ya resueltos de la aplicación, o provéelo tú mismo para acotarlos a una parte del árbol.
@@ -298,28 +298,28 @@ La librería se personaliza por completo mediante variables CSS `--hub-milestone
 
 Las tres vías llegan al componente. Los valores por defecto se publican dentro de un bloque `:where(:root)`, cuya especificidad es cero, de modo que cualquier regla que escribas —`:root`, `html`, `hub-milestones`, una clase contenedora— gana sin necesidad de `!important`. Cuanto más cercano el selector, más estrecho el alcance: `:root` re-tematiza todas las líneas de tiempo de la aplicación, `hub-milestones` solo las que coincidan con ese selector, y el input `color`, un único nodo.
 
-| Variable CSS                           | Por defecto                                    | Descripción                                                          |
-| -------------------------------------- | ---------------------------------------------- | -------------------------------------------------------------------- |
-| `--hub-milestone-node-size`            | `2.75rem`                                      | Diámetro del círculo del nodo.                                       |
-| `--hub-milestone-node-font-size`       | `1.05rem`                                      | Tamaño de fuente del contenido del nodo.                            |
-| `--hub-milestone-node-color`           | `var(--hub-sys-color-primary, #0d6efd)`        | Color de fondo del nodo (completado/activo). También tiñe el trazo. |
-| `--hub-milestone-node-text`            | `var(--hub-ref-color-white, #ffffff)`          | Color del texto/contenido del nodo.                                 |
-| `--hub-milestone-pending-bg`           | `var(--hub-sys-surface-elevated, #f8f9fa)`     | Fondo de un nodo pendiente.                                         |
-| `--hub-milestone-pending-color`        | `var(--hub-sys-text-muted, #6c757d)`           | Color del texto de un nodo pendiente.                              |
-| `--hub-milestone-pending-border`       | `var(--hub-sys-border-color-default, #dee2e6)` | Borde de un nodo pendiente.                                        |
-| `--hub-milestone-error-bg`             | `var(--hub-sys-color-danger, #dc3545)`         | Fondo de un nodo de error.                                        |
-| `--hub-milestone-connector-thickness`  | `3px`                                          | Grosor del raíl de conexión.                                      |
-| `--hub-milestone-connector-bg`         | por defecto, `--hub-milestone-node-color`      | Fondo del conector para segmentos completados. Sin fijar, sigue el acento del nodo, incluido un `color` por nodo. |
-| `--hub-milestone-connector-pending-bg` | `var(--hub-sys-border-color-default, #dee2e6)` | Fondo del conector que lleva a un nodo pendiente.                 |
-| `--hub-milestone-gap`                  | `1rem`                                         | Espacio entre el nodo y su cuerpo.                                |
-| `--hub-milestone-spacing`              | `1.75rem`                                      | Espaciado entre hitos consecutivos.                               |
-| `--hub-milestone-body-color`           | `var(--hub-sys-text-primary, #212529)`         | Color del texto del cuerpo.                                       |
-| `--hub-milestone-body-muted`           | `var(--hub-sys-text-muted, #6c757d)`           | Color atenuado del texto del cuerpo.                              |
-| `--hub-milestone-pulse-color`          | `var(--hub-milestone-node-color)`              | Color de la onda de pulso del nodo activo (`[pulse]`).            |
-| `--hub-milestone-pulse-duration`       | `1.6s`                                         | Duración de un ciclo de pulso.                                    |
-| `--hub-milestone-pulse-spread`         | `0.75rem`                                      | Cuánto se expande la onda de pulso desde el nodo.                |
-| `--hub-milestone-reveal-duration`      | `0.5s`                                         | Duración del rellenado de cada conector durante el revelado.     |
-| `--hub-milestone-reveal-stagger`       | `0.14s`                                        | Retardo entre el rellenado de conectores consecutivos (cascada). |
+| Variable CSS                           | Por defecto                                    | Descripción                                                                                                                  |
+| -------------------------------------- | ---------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| `--hub-milestone-node-size`            | `2.75rem`                                      | Diámetro del círculo del nodo.                                                                                               |
+| `--hub-milestone-node-font-size`       | `1.05rem`                                      | Tamaño de fuente del contenido del nodo.                                                                                     |
+| `--hub-milestone-node-color`           | `var(--hub-sys-color-primary, #0d6efd)`        | Color de fondo del nodo (completado/activo). También tiñe el trazo.                                                          |
+| `--hub-milestone-node-text`            | derivado de `--hub-milestone-node-color`       | Color del texto/contenido del nodo. Sin fijar, es el negro o el blanco, elegido según la claridad del propio color del nodo. |
+| `--hub-milestone-pending-bg`           | `var(--hub-sys-surface-elevated, #f8f9fa)`     | Fondo de un nodo pendiente.                                                                                                  |
+| `--hub-milestone-pending-color`        | `var(--hub-sys-text-muted, #6c757d)`           | Color del texto de un nodo pendiente.                                                                                        |
+| `--hub-milestone-pending-border`       | `var(--hub-sys-border-color-default, #dee2e6)` | Borde de un nodo pendiente.                                                                                                  |
+| `--hub-milestone-error-bg`             | `var(--hub-sys-color-danger, #dc3545)`         | Fondo de un nodo de error.                                                                                                   |
+| `--hub-milestone-connector-thickness`  | `3px`                                          | Grosor del raíl de conexión.                                                                                                 |
+| `--hub-milestone-connector-bg`         | por defecto, `--hub-milestone-node-color`      | Fondo del conector para segmentos completados. Sin fijar, sigue el acento del nodo, incluido un `color` por nodo.            |
+| `--hub-milestone-connector-pending-bg` | `var(--hub-sys-border-color-default, #dee2e6)` | Fondo del conector que lleva a un nodo pendiente.                                                                            |
+| `--hub-milestone-gap`                  | `1rem`                                         | Espacio entre el nodo y su cuerpo.                                                                                           |
+| `--hub-milestone-spacing`              | `1.75rem`                                      | Espaciado entre hitos consecutivos.                                                                                          |
+| `--hub-milestone-body-color`           | `var(--hub-sys-text-primary, #212529)`         | Color del texto del cuerpo.                                                                                                  |
+| `--hub-milestone-body-muted`           | `var(--hub-sys-text-muted, #6c757d)`           | Color atenuado del texto del cuerpo.                                                                                         |
+| `--hub-milestone-pulse-color`          | `var(--hub-milestone-node-color)`              | Color de la onda de pulso del nodo activo (`[pulse]`).                                                                       |
+| `--hub-milestone-pulse-duration`       | `1.6s`                                         | Duración de un ciclo de pulso.                                                                                               |
+| `--hub-milestone-pulse-spread`         | `0.75rem`                                      | Cuánto se expande la onda de pulso desde el nodo.                                                                            |
+| `--hub-milestone-reveal-duration`      | `0.5s`                                         | Duración del rellenado de cada conector durante el revelado.                                                                 |
+| `--hub-milestone-reveal-stagger`       | `0.14s`                                        | Retardo entre el rellenado de conectores consecutivos (cascada).                                                             |
 
 Ejemplo de personalización independiente del framework:
 

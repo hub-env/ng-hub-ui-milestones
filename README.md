@@ -241,10 +241,10 @@ The per-instance `[reveal]` input always wins over the global default:
 
 #### Inputs
 
-| Input         | Type                       | Default      | Description                                                                                                                            |
-| ------------- | -------------------------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------- |
-| `orientation` | `HubMilestonesOrientation` | `'vertical'` | Layout direction: `'vertical'` or `'horizontal'`.                                                                                     |
-| `pulse`       | `boolean`                  | `false`      | Emits a soft wave on the `active` node to highlight the current step. Respects `prefers-reduced-motion`.                              |
+| Input         | Type                       | Default      | Description                                                                                                                          |
+| ------------- | -------------------------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------ |
+| `orientation` | `HubMilestonesOrientation` | `'vertical'` | Layout direction: `'vertical'` or `'horizontal'`.                                                                                    |
+| `pulse`       | `boolean`                  | `false`      | Emits a soft wave on the `active` node to highlight the current step. Respects `prefers-reduced-motion`.                             |
 | `reveal`      | `boolean`                  | _(global)_   | Plays the viewport reveal animation when the timeline scrolls into view. Defaults to the `provideHubMilestones` value (on if unset). |
 
 > The container also auto-numbers its projected `hub-milestone` nodes in DOM order; no input is required for this.
@@ -253,21 +253,21 @@ The per-instance `[reveal]` input always wins over the global default:
 
 An environment provider for application-wide defaults. Add it to your `ApplicationConfig` `providers` array.
 
-| Option   | Type      | Default | Description                                                                              |
-| -------- | --------- | ------- | ---------------------------------------------------------------------------------------- |
-| `reveal` | `boolean` | `true`  | Default for the viewport reveal animation. Overridden per instance by the `[reveal]` input. |
+| Option        | Type                                         | Default     | Description                                                                                                                                     |
+| ------------- | -------------------------------------------- | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| `reveal`      | `boolean`                                    | `true`      | Default for the viewport reveal animation. Overridden per instance by the `[reveal]` input.                                                     |
 | `stateLabels` | `Partial<Record<HubMilestoneState, string>>` | _(English)_ | The word each state is announced with. This is where the wording gets translated; `''` silences a state. Overridden per node by `[stateLabel]`. |
 
 ### `HubMilestoneComponent` — `<hub-milestone>`
 
 #### Inputs
 
-| Input   | Type                | Default     | Description                                                                                       |
-| ------- | ------------------- | ----------- | ------------------------------------------------------------------------------------------------- |
-| `state` | `HubMilestoneState` | `'pending'` | Visual state: `'complete'` · `'active'` · `'pending'` · `'error'`. Drives node/connector colors.  |
-| `color` | `string`            | `''`        | Per-node color override (any CSS color). Wins over the state color.                               |
-| `label` | `string`            | `''`        | Fallback content shown inside the node when no `hubMilestoneNode` template is given.              |
-| `stateLabel` | `string \| undefined` | _(global)_ | The word this node is announced with, overriding `stateLabels`. `''` silences it; leave it unset to inherit. |
+| Input        | Type                  | Default     | Description                                                                                                  |
+| ------------ | --------------------- | ----------- | ------------------------------------------------------------------------------------------------------------ |
+| `state`      | `HubMilestoneState`   | `'pending'` | Visual state: `'complete'` · `'active'` · `'pending'` · `'error'`. Drives node/connector colors.             |
+| `color`      | `string`              | `''`        | Per-node color override (any CSS color). Wins over the state color.                                          |
+| `label`      | `string`              | `''`        | Fallback content shown inside the node when no `hubMilestoneNode` template is given.                         |
+| `stateLabel` | `string \| undefined` | _(global)_  | The word this node is announced with, overriding `stateLabels`. `''` silences it; leave it unset to inherit. |
 
 > Projected (non-template) content placed inside `<hub-milestone>` is rendered as the node body, beside (vertical) or below (horizontal) the node circle.
 
@@ -284,10 +284,10 @@ An attribute directive applied to an `<ng-template>` to mark the content rendere
 
 ### Exported types and tokens
 
-| Type                       | Values                                           |
-| -------------------------- | ------------------------------------------------ |
-| `HubMilestonesOrientation` | `'vertical' \| 'horizontal'`                     |
-| `HubMilestoneState`        | `'complete' \| 'active' \| 'pending' \| 'error'` |
+| Type                       | Values                                                                           |
+| -------------------------- | -------------------------------------------------------------------------------- |
+| `HubMilestonesOrientation` | `'vertical' \| 'horizontal'`                                                     |
+| `HubMilestoneState`        | `'complete' \| 'active' \| 'pending' \| 'error'`                                 |
 | `HubMilestonesConfig`      | `{ reveal?: boolean; stateLabels?: Partial<Record<HubMilestoneState, string>> }` |
 
 `HUB_MILESTONES_CONFIG` — the `InjectionToken<HubMilestonesConfig>` that `provideHubMilestones()` fills — is exported as well. Read it with `inject(HUB_MILESTONES_CONFIG, { optional: true })` when you need the resolved application defaults, or provide it yourself to scope them to one part of the tree.
@@ -298,28 +298,28 @@ The library is themed entirely through `--hub-milestone-*` CSS variables, with s
 
 All three reach the component. The defaults ship inside a `:where(:root)` block, which scores zero specificity, so a rule you write anywhere — `:root`, `html`, `hub-milestones`, a wrapper class — outranks them without `!important`. The closer the selector, the narrower the scope: `:root` re-themes every timeline in the application, `hub-milestones` only the ones matching that selector, and the `color` input a single node.
 
-| CSS Variable                           | Default                                        | Description                                                          |
-| -------------------------------------- | ---------------------------------------------- | ------------------------------------------------------------------- |
-| `--hub-milestone-node-size`            | `2.75rem`                                      | Diameter of the node circle.                                        |
-| `--hub-milestone-node-font-size`       | `1.05rem`                                      | Font size of the node content.                                      |
-| `--hub-milestone-node-color`           | `var(--hub-sys-color-primary, #0d6efd)`        | Node background color (complete/active). Also drives the trail.     |
-| `--hub-milestone-node-text`            | `var(--hub-ref-color-white, #ffffff)`          | Node text/content color.                                            |
-| `--hub-milestone-pending-bg`           | `var(--hub-sys-surface-elevated, #f8f9fa)`     | Background of a pending node.                                       |
-| `--hub-milestone-pending-color`        | `var(--hub-sys-text-muted, #6c757d)`           | Text color of a pending node.                                       |
-| `--hub-milestone-pending-border`       | `var(--hub-sys-border-color-default, #dee2e6)` | Border of a pending node.                                          |
-| `--hub-milestone-error-bg`             | `var(--hub-sys-color-danger, #dc3545)`         | Background of an error node.                                       |
-| `--hub-milestone-connector-thickness`  | `3px`                                          | Thickness of the connecting rail.                                  |
-| `--hub-milestone-connector-bg`         | falls back to `--hub-milestone-node-color`     | Connector fill for completed segments. Unset, it follows the node accent, including a per-node `color`. |
-| `--hub-milestone-connector-pending-bg` | `var(--hub-sys-border-color-default, #dee2e6)` | Connector fill for segments leading into a pending node.           |
-| `--hub-milestone-gap`                  | `1rem`                                         | Gap between the node and its body.                                 |
-| `--hub-milestone-spacing`              | `1.75rem`                                      | Spacing between consecutive milestones.                            |
-| `--hub-milestone-body-color`           | `var(--hub-sys-text-primary, #212529)`         | Body text color.                                                   |
-| `--hub-milestone-body-muted`           | `var(--hub-sys-text-muted, #6c757d)`           | Muted body text color.                                            |
-| `--hub-milestone-pulse-color`          | `var(--hub-milestone-node-color)`              | Color of the active-node pulse wave (`[pulse]`).                  |
-| `--hub-milestone-pulse-duration`       | `1.6s`                                         | Duration of one pulse cycle.                                      |
-| `--hub-milestone-pulse-spread`         | `0.75rem`                                      | How far the pulse wave expands from the node.                    |
-| `--hub-milestone-reveal-duration`      | `0.5s`                                         | Duration of each connector's fill during the viewport reveal.    |
-| `--hub-milestone-reveal-stagger`       | `0.14s`                                        | Delay between consecutive connectors filling (cascading reveal). |
+| CSS Variable                           | Default                                        | Description                                                                                                            |
+| -------------------------------------- | ---------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| `--hub-milestone-node-size`            | `2.75rem`                                      | Diameter of the node circle.                                                                                           |
+| `--hub-milestone-node-font-size`       | `1.05rem`                                      | Font size of the node content.                                                                                         |
+| `--hub-milestone-node-color`           | `var(--hub-sys-color-primary, #0d6efd)`        | Node background color (complete/active). Also drives the trail.                                                        |
+| `--hub-milestone-node-text`            | derived from `--hub-milestone-node-color`      | Node text/content color. Unset, it is the black or white end of the ramp, chosen from the node colour's own lightness. |
+| `--hub-milestone-pending-bg`           | `var(--hub-sys-surface-elevated, #f8f9fa)`     | Background of a pending node.                                                                                          |
+| `--hub-milestone-pending-color`        | `var(--hub-sys-text-muted, #6c757d)`           | Text color of a pending node.                                                                                          |
+| `--hub-milestone-pending-border`       | `var(--hub-sys-border-color-default, #dee2e6)` | Border of a pending node.                                                                                              |
+| `--hub-milestone-error-bg`             | `var(--hub-sys-color-danger, #dc3545)`         | Background of an error node.                                                                                           |
+| `--hub-milestone-connector-thickness`  | `3px`                                          | Thickness of the connecting rail.                                                                                      |
+| `--hub-milestone-connector-bg`         | falls back to `--hub-milestone-node-color`     | Connector fill for completed segments. Unset, it follows the node accent, including a per-node `color`.                |
+| `--hub-milestone-connector-pending-bg` | `var(--hub-sys-border-color-default, #dee2e6)` | Connector fill for segments leading into a pending node.                                                               |
+| `--hub-milestone-gap`                  | `1rem`                                         | Gap between the node and its body.                                                                                     |
+| `--hub-milestone-spacing`              | `1.75rem`                                      | Spacing between consecutive milestones.                                                                                |
+| `--hub-milestone-body-color`           | `var(--hub-sys-text-primary, #212529)`         | Body text color.                                                                                                       |
+| `--hub-milestone-body-muted`           | `var(--hub-sys-text-muted, #6c757d)`           | Muted body text color.                                                                                                 |
+| `--hub-milestone-pulse-color`          | `var(--hub-milestone-node-color)`              | Color of the active-node pulse wave (`[pulse]`).                                                                       |
+| `--hub-milestone-pulse-duration`       | `1.6s`                                         | Duration of one pulse cycle.                                                                                           |
+| `--hub-milestone-pulse-spread`         | `0.75rem`                                      | How far the pulse wave expands from the node.                                                                          |
+| `--hub-milestone-reveal-duration`      | `0.5s`                                         | Duration of each connector's fill during the viewport reveal.                                                          |
+| `--hub-milestone-reveal-stagger`       | `0.14s`                                        | Delay between consecutive connectors filling (cascading reveal).                                                       |
 
 Framework-agnostic customization example:
 

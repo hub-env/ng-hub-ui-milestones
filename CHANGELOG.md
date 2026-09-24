@@ -5,6 +5,30 @@ All notable changes to `ng-hub-ui-milestones` are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [22.7.0] - 2026-09-24
+
+### Changed
+
+- **A node's ink is now derived from the node's own colour, instead of always being white.**
+  The disc's colour is the consumer's — `color="#f59e0b"`, or `--hub-milestone-node-color` set
+  anywhere above it — and the number, letter or glyph inside it was painted white whatever that
+  colour turned out to be. Measured on the documentation's own custom-nodes example, an amber
+  disc read at 2.15:1, a sky one at 2.77:1 and a green one at 3.30:1, all of them under the
+  4.5:1 WCAG AA asks of text that size. The ink is now the black or white end of the ramp,
+  chosen from the disc's own perceptual lightness with the same expression the design system
+  computes `--hub-sys-color-*-on` with, so an accent gets the same ink here as anywhere else.
+  The three above become 9.78:1, 7.58:1 and 6.37:1; the nine ds accents keep the ink they had.
+  See BREAKING_CHANGES.md.
+- `--hub-milestone-node-text` is no longer declared in the root token block. It is still read
+  first wherever the ink is painted, so setting it still wins — it simply has no default of its
+  own any more, which is what lets the derivation reach a per-node colour.
+
+### Fixed
+
+- The error badge keeps its light disc. It used to borrow `--hub-milestone-node-text`, which
+  now follows the node's colour and would have turned the badge black on any light accent; it
+  falls back to white on its own and still follows a pinned `--hub-milestone-node-text`.
+
 ## [22.6.0] - 2026-09-23
 
 ### Changed

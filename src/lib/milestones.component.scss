@@ -16,7 +16,10 @@
 	--hub-milestone-node-size: 2.75rem;
 	--hub-milestone-node-font-size: 1.05rem;
 	--hub-milestone-node-color: var(--hub-sys-color-primary, #0d6efd);
-	--hub-milestone-node-text: var(--hub-ref-color-white, #ffffff);
+	// --hub-milestone-node-text is deliberately NOT declared here. See `.hub-milestone__node`:
+	// the ink has to be derived from the disc's own colour, and the disc's colour is written on
+	// the milestone, not on the root. Declared here the derivation would read the root's accent
+	// and every node would take the same ink, whatever colour the consumer gave it.
 	--hub-milestone-pending-bg: var(--hub-sys-surface-elevated, #f8f9fa);
 	--hub-milestone-pending-color: var(--hub-sys-text-muted, #6c757d);
 	--hub-milestone-pending-border: var(--hub-sys-border-color-default, #dee2e6);
@@ -59,7 +62,15 @@
 	font-size: var(--hub-milestone-node-font-size);
 	line-height: 1;
 	background: var(--hub-milestone-node-color);
-	color: var(--hub-milestone-node-text);
+	// Black or white, whichever the disc can carry, decided from the disc's own lightness — the
+	// same expression the design system computes `--hub-sys-color-*-on` with, so an accent gets
+	// one ink here and the same ink from any other component. The node colour is the consumer's
+	// (`color="#f59e0b"`, or the token set anywhere above), and white was not: an amber disc
+	// printed white at 2.15:1, a sky one at 2.77:1 and a green one at 3.30:1.
+	//
+	// Read here rather than declared at the root so `from` resolves against THIS element, where
+	// the per-node colour lives. Same shape as --hub-milestone-connector-bg below.
+	color: var(--hub-milestone-node-text, oklch(from var(--hub-milestone-node-color) clamp(0, (0.62 - l) * 1000, 1) 0 h));
 	z-index: 1;
 }
 
@@ -125,7 +136,11 @@
 	width: calc(var(--hub-milestone-node-size) * 0.45);
 	height: calc(var(--hub-milestone-node-size) * 0.45);
 	border-radius: 50%;
-	background: var(--hub-milestone-node-text);
+	// The badge is the light half of the pair on purpose — a pale disc with the error colour
+	// inside it — so it takes the node ink only when a consumer has pinned one, and white
+	// otherwise. It cannot take the derived ink: that follows the node's colour and would turn
+	// the badge black on any light accent, which is the opposite of what it is for.
+	background: var(--hub-milestone-node-text, var(--hub-ref-color-white, #ffffff));
 	color: var(--hub-milestone-error-bg);
 	font-size: calc(var(--hub-milestone-node-font-size) * 0.8);
 	font-weight: var(--hub-ref-font-weight-bold, 700);
